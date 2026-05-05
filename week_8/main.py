@@ -1,36 +1,23 @@
-from character import Hero, Villain
-from file_utils import get_random_from_file
 
-hero_name = get_random_from_file(r"data\heroes (1).txt")
-hero_weapon = get_random_from_file(r"data\weapons (1).txt")
-villain_name = get_random_from_file(r"data\villains (1).txt")
-villain_weapon = get_random_from_file(r"data\weapons (1).txt")
+from fight import calculate_hit
+from read_from_file import read_data
 
-hero = Hero(hero_name, hero_weapon)
-villain = Villain(villain_name, villain_weapon)
+hero = read_data(r"data\heroes.txt")
+villain = read_data(r"data\villains.txt")
 
-print("=== BATTLE BEGINS ===")
+hero_weapon = read_data(r"data\weapons.txt")
+villain_weapon = read_data(r"data\weapons.txt")
 
-print(f"Hero: {hero.name} | HP: {hero.hp} | Weapon: {hero.weapon}")
-print(f" Villain: {villain.name} | HP: {villain.hp} | Weapon: {villain.weapon}")
 
-round_number = 1
+hero_hit = calculate_hit(hero, hero_weapon)
+villain_hit = calculate_hit(villain, villain_weapon)
 
-while hero.is_alive() and villain.is_alive():
-    print(f"--- ROUND {round_number} ---")
+print(f"{hero} uses {hero_weapon} and hits with power {hero_hit}.")
+print(f"{villain} uses {villain_weapon} and hits with power {villain_hit}.")
 
-    hero.attack(villain)
-
-    if not villain.is_alive():
-        break
-
-    villain.attack(hero)
-
-    round_number = round_number + 1
-
-print("=== BATTLE ENDS ===")
-
-if hero.is_alive():
-    print("HERO WINS!")
+if hero_hit > villain_hit:
+    print(f"{hero} savest the day!")
+elif villain_hit > hero_hit:
+    print(f"{villain} and the Dark Side wins!")
 else:
-    print("Dark side wins...")
+    print("It's a tie!")
